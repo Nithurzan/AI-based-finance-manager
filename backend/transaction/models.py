@@ -10,8 +10,9 @@ class Type(str,Enum):
 
 class Transaction(BaseModel):
     amount: float
-    category: str
+    category: str = None
     type: Type
+    description:str
     date : datetime = datetime.now()
 
 class TransactionInDB(Transaction):
