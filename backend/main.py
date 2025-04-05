@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 # from fastapi.middleware.cors import CORSMiddleware
 from authentication import auth_route
+from transaction import transaction_route
 
 
 
@@ -15,6 +16,7 @@ app = FastAPI()
 # )
 
 app.include_router(auth_route.router, tags=["Auth"])
+app.include_router(transaction_route.router, tags=["Transactions"])
 
 
 @app.get("/")
