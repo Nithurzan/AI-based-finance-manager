@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from authentication import auth_route
 from transaction import transaction_route
 from predictions import prediction_route
+from budget import budget_route
 
 
 
@@ -19,8 +20,9 @@ app = FastAPI()
 app.include_router(auth_route.router, tags=["Auth"])
 app.include_router(transaction_route.router, tags=["Transactions"])
 app.include_router(prediction_route.router, tags=["Predictions"])
+app.include_router(budget_route.router, tags=["Budget"])
 
 
-@app.get("/")
+@app.get("/") 
 async def root():
     return ("Test")
