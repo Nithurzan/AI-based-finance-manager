@@ -5,6 +5,7 @@ from database import get_db
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt,JWTError
 from config import SECRET_KEY,ALGORITHM
+from utils.serializer import serialize_document
 
 
 
@@ -66,9 +67,12 @@ async def get_user_profile(token:str=Depends(oauth2_scheme)):
         if user is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
         
-        return user
+        return serialize_document(user)
 
     except JWTError as e:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED , detail="Invalid token")
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail=f"Error:{str(e)}")
+
+
+
