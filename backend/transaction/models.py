@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_serializer
 from datetime import datetime
 from typing import Optional
 from enum import Enum
@@ -15,10 +15,9 @@ class Transaction(BaseModel):
     description:str
     date: datetime = Field(default_factory=datetime.now)
 
-    class Config:
-        json_encoders = {
-            datetime: lambda v: v.strftime('%Y-%m-%d')  # <-- Format here
-        }
+    @field_serializer("date")
+    def serialize_date(self, date: datetime, _info):
+        return date.strftime("%Y-%m-%d")  
 
 class TransactionInDB(Transaction):
     user_id: str 
