@@ -15,7 +15,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
 
-@router.get("/ai/spending-analyseis")
+@router.get("/ai/spending-analysis")
 async def spending_analysis(token:str = Depends(oauth2_scheme)):
     try:
         db = get_db()
@@ -23,7 +23,7 @@ async def spending_analysis(token:str = Depends(oauth2_scheme)):
         user = await get_current_user(token)
 
         pipeline = [
-            {"$match": {"user_id": str(user["_id"])}},
+            {"$match": {"user_id": user}},
             {"$group": {
                 "_id": {
                     "month": {"$substr": ["$date", 0, 7]},
@@ -57,7 +57,7 @@ async def budget_prediction(token: str = Depends(oauth2_scheme)):
         user = await get_current_user(token)
        
         pipeline = [
-            {"$match": {"user_id": str(user["_id"])}},
+            {"$match": {"user_id": user}},
             {"$group": {
                 "_id": {"$substr": ["$date", 0, 7]},  # YYYY-MM
                 "total": {"$sum": "$amount"}
@@ -100,7 +100,7 @@ async def savings_suggestions(token: str = Depends(oauth2_scheme)):
 
         # Calculate category-wise spending
         pipeline = [
-            {"$match": {"user_id": str(user["_id"])}},
+            {"$match": {"user_id": user}},
             {"$group": {"_id": "$category", "total": {"$sum": "$amount"}}},
             {"$sort": {"total": -1}}
         ]
