@@ -143,7 +143,7 @@ async def monthly_report(
                 total_expense = item["total"]
             transaction_count += item["count"]
 
-        # Category breakdown (only for expenses)
+        # Category breakdown (only for expenses)   
         pipeline2 = [
             {
                 "$match": {
