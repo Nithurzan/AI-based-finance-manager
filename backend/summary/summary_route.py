@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
 from datetime import datetime, timedelta
-from database import get_db
+
 from defendecies import get_current_user
+from database import get_db
 
 router = APIRouter(prefix='/dashboard')
 
