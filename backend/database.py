@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 try:
     client = AsyncIOMotorClient(os.getenv("MONGO_URI"))
-    db = client.finance_manager
+    db = client["finance_manager"]
 except PyMongoError as e:
     logger.info(f"Failed to connect database")
     db = None

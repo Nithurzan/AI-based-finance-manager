@@ -19,4 +19,4 @@ app.include_router(auth_route.router, tags=["Auth"])
 
 @app.get("/")
 async def root():
-    return {"test"}
+    return ("Test")
