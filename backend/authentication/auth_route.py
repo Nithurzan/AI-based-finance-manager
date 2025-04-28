@@ -25,6 +25,7 @@ async def register_user(user:User):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="User already exist!")
         
         user_dict["hashed_password"] = password_hash(user.password)
+        del user_dict["password"]
         
 
         result = await db.users.insert_one(user_dict)
