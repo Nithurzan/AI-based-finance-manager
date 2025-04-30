@@ -13,3 +13,11 @@ backend\budget\__pycache__
 backend\budget\__pycache__/
 backend\utils\__pycache__
 backend\utils\__pycache__/
+
+backend/__pycache__/
+backend/authentication/__pycache__/auth.cpython-312.pyc
+backend/authentication/__pycache__/auth_route.cpython-312.pyc
+backend/authentication/__pycache__/schema.cpython-312.pyc
+backend/budget/__pycache__/
+backend/predictions/__pycache__/
+backend/transaction/__pycache__/
