@@ -21,3 +21,6 @@ backend/authentication/__pycache__/schema.cpython-312.pyc
 backend/budget/__pycache__/
 backend/predictions/__pycache__/
 backend/transaction/__pycache__/
+
+backend/summary/__pycache__/summary_route.cpython-312.pyc
+backend/utils/__pycache__/serializer.cpython-312.pyc
