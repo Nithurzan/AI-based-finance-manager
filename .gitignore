@@ -2,11 +2,14 @@ venv/
 backend\transaction\__pycache__
 backend\authentication\__pycache__
 backend\__pycache__
+backend\__pycache__/
 
 backend\transaction\__pycache__/
-backend\transaction\__pycache__
+backend\transaction\__pycache__\
 backend\authentication\__pycache__/
 backend\__pycache__/
-backend\authentication\__pycache__/
+backend\authentication\__pycache__
 backend\budget\__pycache__
 backend\budget\__pycache__/
+backend\utils\__pycache__
+backend\utils\__pycache__/
