@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
 from datetime import datetime, timedelta
-
-from defendecies import get_current_user
 from database import get_db
+from defendecies import get_current_user
+from bson import ObjectId
 
 router = APIRouter(prefix='/dashboard')
 
@@ -22,13 +22,18 @@ async def dashboard_summary(
             end_date = (today.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
             end_date = end_date.strftime('%Y-%m-%d')
 
-        print(f"user_id: {user_id}, start_date: {start_date}, end_date: {end_date}")
+        # Convert user_id to string
+        user_id_str = str(user_id["_id"])
+
         # Match user's transactions within the date range
         pipeline = [
             {
                 "$match": {
-                    "user_id": user_id,
-                    "date": {"$gte": start_date, "$lte": end_date}
+                    "user_id": user_id_str,
+                    "date": {
+                        "$gte": start_date,
+                        "$lte": end_date
+                    }
                 }
             },
             {
@@ -39,9 +44,8 @@ async def dashboard_summary(
                 }
             }
         ]
-
+        print(f"pipeline: {pipeline}")
         data = await db.transactions.aggregate(pipeline).to_list(None)
-        print (f"data:{data}")
 
         total_income = total_expense = transaction_count = 0
 
@@ -76,10 +80,13 @@ async def category_wise_expense(
         db = get_db()
         target_month = month or datetime.now().strftime("%Y-%m")
 
+         # Convert user_id to string
+        user_id_str = str(user_id["_id"])
+
         pipeline = [
             {
                 "$match": {
-                    "user_id": user_id,
+                    "user_id": user_id_str,
                     "type": "expense",
                     "date": {"$regex": f"^{target_month}"}
                 }
@@ -117,11 +124,13 @@ async def monthly_report(
         db = get_db()
         target_month = month or datetime.now().strftime("%Y-%m")
 
+        user_id_str = str(user_id["_id"])
+
         # Aggregate income, expense, count
         pipeline1 = [
             {
                 "$match": {
-                    "user_id": user_id,
+                    "user_id": user_id_str,
                     "date": {"$regex": f"^{target_month}"}
                 }
             },
@@ -134,7 +143,6 @@ async def monthly_report(
             }
         ]
         summary = await db.transactions.aggregate(pipeline1).to_list(None)
-        print("Data Retrieved:", summary)
 
         total_income = total_expense = transaction_count = 0
         for item in summary:
@@ -148,7 +156,7 @@ async def monthly_report(
         pipeline2 = [
             {
                 "$match": {
-                    "user_id": user_id,
+                    "user_id": user_id_str,
                     "type": "expense",
                     "date": {"$regex": f"^{target_month}"}
                 }
@@ -177,7 +185,7 @@ async def monthly_report(
 
 
 
-@router.get("/dashboard/yearly-report")
+@router.get("/yearly-report")
 async def yearly_report(
     year: str = Query(None),
     user_id: str = Depends(get_current_user)
@@ -186,11 +194,13 @@ async def yearly_report(
         db = get_db()
         target_year = year or datetime.now().strftime("%Y")
 
+        user_id_str = str(user_id["_id"])
+
         # Aggregate income, expense, count for the year
         pipeline1 = [
             {
                 "$match": {
-                    "user_id": user_id,
+                    "user_id": user_id_str,
                     "date": {"$regex": f"^{target_year}"}
                 }
             },
@@ -216,7 +226,7 @@ async def yearly_report(
         pipeline2 = [
             {
                 "$match": {
-                    "user_id": user_id,
+                    "user_id": user_id_str,
                     "type": "expense",
                     "date": {"$regex": f"^{target_year}"}
                 }
