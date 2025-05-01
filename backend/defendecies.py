@@ -14,7 +14,6 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         db = get_db()
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        print(f"Decoded payload: {payload}")
         user_email = payload.get("sub")
 
         if not user_email:
@@ -24,7 +23,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-        print(f"user: {user}")
+       
         return user
 
     except ExpiredSignatureError:
